@@ -273,12 +273,8 @@ The effective alpha at that pixel is:
 Front-to-back alpha compositing gives the final color:
 
 ```math
-C_i =
-\sum_j
-c_j
-\tilde{\alpha}_{ij}
-\prod_{k<j}
-(1-\tilde{\alpha}_{ik}).
+C_i = \sum_j c_j \tilde{\alpha}_{ij}
+\prod_{k=1}^{j-1}(1-\tilde{\alpha}_{ik}).
 ```
 
 With a white background, the remaining transmittance contributes white:

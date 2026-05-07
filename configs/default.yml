@@ -1,0 +1,31 @@
+project:
+  name: 3D-Gaussian-Splatting
+
+pipeline:
+  install_requirements: true
+  install_simple_knn: false
+  render: true
+  evaluate: true
+
+render:
+  scenes:
+    - chair
+    - lego
+    - materials
+    - drums
+  device_type: cuda
+  cuda_visible_devices: "0"
+  output_root: outputs/renders
+  num_views: null
+
+evaluation:
+  ref_root: data/nerf_synthetic
+  output_file: outputs/evaluation/evaluation.txt
+
+checkpoints:
+  directory: outputs/checkpoints
+  run_name: default
+
+logging:
+  directory: logs
+  file_name: run.log

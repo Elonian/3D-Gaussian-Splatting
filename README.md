@@ -129,18 +129,15 @@ Each scene is loaded from a binary PLY file. For every Gaussian splat, the loade
 The renderer converts the stored parameters into active values:
 
 ```math
-\alpha = \sigma(\alpha_{\text{raw}}),
-\qquad
-s = \exp(s_{\text{raw}}),
-\qquad
-q = \frac{q_{\text{raw}}}{\|q_{\text{raw}}\|}.
+\alpha = \sigma(\alpha_{\mathrm{raw}}), \quad
+s = \exp(s_{\mathrm{raw}}), \quad
+q = \frac{q_{\mathrm{raw}}}{\lVert q_{\mathrm{raw}} \rVert}.
 ```
 
 The 3D covariance is built from scale and rotation:
 
 ```math
-L = R(q)\,\operatorname{diag}(s),
-\qquad
+L = R(q) D_s, \quad D_s = \mathrm{diag}(s), \quad
 \Sigma_{3D} = L L^\top.
 ```
 
@@ -181,22 +178,21 @@ p_c = p_v P.
 Normalized device coordinates are obtained by homogeneous division:
 
 ```math
-p_{\text{ndc}} =
+p_{\mathrm{ndc}} =
 \frac{p_c}{p_{c,w}}.
 ```
 
 Only points in front of the near plane are retained:
 
 ```math
-p_{v,z} > z_{\text{near}}.
+p_{v,z} > z_{\mathrm{near}}.
 ```
 
 Finally, NDC coordinates are converted into pixel coordinates:
 
 ```math
-u = \frac{(x_{\text{ndc}} + 1)W - 1}{2},
-\qquad
-v = \frac{(y_{\text{ndc}} + 1)H - 1}{2}.
+u = \frac{(x_{\mathrm{ndc}} + 1)W - 1}{2}, \quad
+v = \frac{(y_{\mathrm{ndc}} + 1)H - 1}{2}.
 ```
 
 ### Interpretation
@@ -255,13 +251,8 @@ d_{ij} = x_i - \mu_j.
 The Gaussian image-plane weight is:
 
 ```math
-w_{ij}
-=
-\exp\left(
--\frac{1}{2} d_{ij}^{\top}
-\Sigma_{j}^{-1}
-d_{ij}
-\right).
+w_{ij} =
+\exp\!\left(-\frac{1}{2} d_{ij}^{\top}\Sigma_j^{-1}d_{ij}\right).
 ```
 
 The effective alpha at that pixel is:
@@ -274,18 +265,14 @@ Front-to-back alpha compositing gives the final color:
 
 ```math
 C_i = \sum_j c_j \tilde{\alpha}_{ij}
-\prod_{k=1}^{j-1}(1-\tilde{\alpha}_{ik}).
+\left(\prod_{k=1}^{j-1} (1-\tilde{\alpha}_{ik})\right).
 ```
 
 With a white background, the remaining transmittance contributes white:
 
 ```math
-C_i^{\text{final}}
-=
-C_i
-+
-\left(\prod_j (1-\tilde{\alpha}_{ij})\right)
-\mathbf{1}.
+C_i^{\mathrm{final}} =
+C_i + \left(\prod_j (1-\tilde{\alpha}_{ij})\right)\mathbf{1}.
 ```
 
 ### Interpretation
